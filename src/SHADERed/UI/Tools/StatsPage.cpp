@@ -2,8 +2,8 @@
 #include <SHADERed/Objects/ThemeContainer.h>
 #include <SHADERed/Objects/Settings.h>
 #include <imgui/imgui.h>
-#include <spirv-tools/libspirv.h>
-#include <spirv-tools/optimizer.hpp>
+#include <spirv-tools/include/spirv-tools/libspirv.h>
+#include <spirv-tools/include/spirv-tools/optimizer.hpp>
 #include <sstream>
 
 namespace ed {
@@ -21,12 +21,12 @@ namespace ed {
 
 		ImGui::Text("SPIR-V: ");
 		ImGui::Separator();
-		
+
 		if (m_data->Debugger.IsDebugging())
 			Highlight(m_data->Debugger.GetCurrentLine()); // TODO: this is copying a vector (although small, but still..) every frame == bad :(
 
 		m_spirv.Render("stats");
-		ImGui::Separator();					
+		ImGui::Separator();
 	}
 
 	void StatsPage::Refresh(PipelineItem* item, ShaderStage stage)
@@ -53,7 +53,7 @@ namespace ed {
 			pipe::PluginItemData* pass = (pipe::PluginItemData*)item->Data;
 
 			unsigned int spvSize = pass->Owner->PipelineItem_GetSPIRVSize(pass->Type, pass->PluginData, (ed::plugin::ShaderStage)stage);
-			unsigned int* spv = pass->Owner->PipelineItem_GetSPIRV(pass->Type, pass->PluginData, (ed::plugin::ShaderStage)stage); 
+			unsigned int* spv = pass->Owner->PipelineItem_GetSPIRV(pass->Type, pass->PluginData, (ed::plugin::ShaderStage)stage);
 
 			m_spv = std::vector<unsigned int>(spv, spv + spvSize);
 		}
@@ -92,7 +92,7 @@ namespace ed {
 			if (line.find("OpLine") != std::string::npos) {
 				std::istringstream lineSS(line);
 				std::vector<std::string> tokens { std::istream_iterator<std::string> { lineSS }, std::istream_iterator<std::string> {} };
-				
+
 				if (tokens.size() >= 3)
 					curLine = std::stoi(tokens[2]);
 

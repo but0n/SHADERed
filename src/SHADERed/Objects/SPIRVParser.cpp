@@ -1,5 +1,5 @@
 #include <SHADERed/Objects/SPIRVParser.h>
-#include <spirv/unified1/spirv.hpp>
+#include <spirv-headers/include/spirv/unified1/spirv.hpp>
 #include <unordered_map>
 #include <functional>
 
@@ -60,13 +60,13 @@ namespace ed {
 
 			const std::pair<ValueType, int>& info = types[actualType];
 			var.Type = info.first;
-			
+
 			if (var.Type == ValueType::Struct)
 				var.TypeName = names[info.second];
 			else if (var.Type == ValueType::Vector || var.Type == ValueType::Matrix) {
 				var.TypeComponentCount = info.second & 0x00ffffff;
 				var.BaseType = (ValueType)((info.second & 0xff000000) >> 24);
-			} 
+			}
 		};
 
 		for (int i = 5; i < ir.size();) {
@@ -264,7 +264,7 @@ namespace ed {
 				ArithmeticInstCount++;
 				break;
 
-				
+
 			case spv::OpShiftRightLogical:
 			case spv::OpShiftRightArithmetic:
 			case spv::OpShiftLeftLogical:
